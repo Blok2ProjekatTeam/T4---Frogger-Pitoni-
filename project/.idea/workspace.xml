@@ -16,8 +16,13 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/frog.py">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="1063">
               <caret line="131" selection-start-line="131" selection-end-line="131" />
+=======
+            <state relative-caret-position="342">
+              <caret line="25" column="12" selection-start-line="25" selection-start-column="12" selection-end-line="25" selection-end-column="12" />
+>>>>>>> 7957a66343456c1d5838d17557f112cfec098d91
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -64,6 +69,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../VEnv" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunDashboard">
@@ -121,7 +127,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -146,8 +151,13 @@
     <entry file="file://$PROJECT_DIR$/frog" />
     <entry file="file://$PROJECT_DIR$/frog.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="1063">
           <caret line="131" selection-start-line="131" selection-end-line="131" />
+=======
+        <state relative-caret-position="342">
+          <caret line="25" column="12" selection-start-line="25" selection-start-column="12" selection-end-line="25" selection-end-column="12" />
+>>>>>>> 7957a66343456c1d5838d17557f112cfec098d91
           <folding>
             <element signature="e#0#10#0" expanded="true" />
           </folding>

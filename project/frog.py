@@ -124,6 +124,13 @@ class KeyNotifier(QObject):
                 self.key_signal.emit(k)
             time.sleep(0.05)
 
+    def Exit(self, event):
+        reply = QMessageBox.question(self, 'Quit', 'Are You Sure to Quit?', QMessageBox.No | QMessageBox.Yes)
+        if reply == QMessageBox.Yes:
+            event.accept()
+        else:
+            event.ignore()
+
 if __name__ == "__main__":
 
     app = QApplication(sys.argv)

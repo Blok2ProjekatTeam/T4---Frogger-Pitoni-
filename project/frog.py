@@ -4,28 +4,29 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtGui import QImage, QPalette, QBrush
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import QThread, QObject, pyqtSignal, pyqtSlot
+import ctypes
 
 import time
+
+user32 = ctypes.windll.user32
 
 class SimMoveDemo(QWidget):
 
     def __init__(self):
         super().__init__()
         QWidget.__init__(self)
-        self.pix1 = QPixmap('frog1.png')
-        self.pix2 = QPixmap('frog1.png')
+        self.pix1 = QPixmap('pictures/frog1.png')
+        self.pix2 = QPixmap('pictures/frog1.png')
         self.label1 = QLabel(self)
         self.label2 = QLabel(self)
         self.setGeometry(100, 100, 646, 559)
         self.setFixedSize(self.size())
         self.showFullScreen()
-        oImage = QImage("backGround.png")
-        sImage = oImage.scaled(QSize(1920, 1080))  # resize Image to widgets size
+        oImage = QImage("pictures/backGround.png")
+        sImage = oImage.scaled(QSize(user32.GetSystemMetrics(78), user32.GetSystemMetrics(79)))
         palette = QPalette()
         palette.setBrush(10, QBrush(sImage))  # 10 = Windowrole
         self.setPalette(palette)
-
-
         self.car_move = CarMove(self)
 
         self.label = QLabel('', self)  # test, if it's really backgroundimage
@@ -38,14 +39,11 @@ class SimMoveDemo(QWidget):
         self.key_notifier.start()
 
     def __init_ui__(self):
-
         self.label1.setPixmap(self.pix1)
-        self.label1.setGeometry(1500, 1000, 60, 60)
-
+        self.label1.setGeometry(user32.GetSystemMetrics(78) - 450, user32.GetSystemMetrics(79) - 60, 70, 60)
 
         self.label2.setPixmap(self.pix2)
-        self.label2.setGeometry(300, 1000, 60, 60)
-
+        self.label2.setGeometry(user32.GetSystemMetrics(78) - 980, user32.GetSystemMetrics(79) - 60, 70, 60)
 
         self.setWindowTitle('Sim Slide')
         self.show()
@@ -55,32 +53,51 @@ class SimMoveDemo(QWidget):
 
     def keyReleaseEvent(self, event):
         self.key_notifier.rem_key(event.key())
+        self.pix3 = QPixmap('pictures/frog1.png')
+        self.label1.setPixmap(self.pix3)
 
     def __update_position__(self, key):
         rec1 = self.label1.geometry()
         rec2 = self.label2.geometry()
-
         if key == Qt.Key_Right:
-            self.label1.setGeometry(rec1.x() + 13, rec1.y(), rec1.width(), rec1.height())
+            if((rec1.x() + 20) < (user32.GetSystemMetrics(78)-50)):
+                self.pix3 = QPixmap('pictures/frogRight.png')
+                self.label1.setPixmap(self.pix3)
+                self.label1.setGeometry(rec1.x() + 20, rec1.y(), rec1.width(), rec1.height())
         elif key == Qt.Key_Down:
-            self.label1.setGeometry(rec1.x(), rec1.y() + 13, rec1.width(), rec1.height())
+            if ((rec1.y() + 58) < user32.GetSystemMetrics(79) - 50):
+                self.pix3 = QPixmap('pictures/frogDown.png')
+                self.label1.setPixmap(self.pix3)
+                self.label1.setGeometry(rec1.x(), rec1.y() + 58, rec1.width(), rec1.height())
         elif key == Qt.Key_Up:
-            self.label1.setGeometry(rec1.x(), rec1.y() - 13, rec1.width(), rec1.height())
+            if ((rec1.y() + 58) > 50):
+                self.pix3 = QPixmap('pictures/frogUp.png')
+                self.label1.setPixmap(self.pix3)
+                self.label1.setGeometry(rec1.x(), rec1.y() - 58, rec1.width(), rec1.height())
         elif key == Qt.Key_Left:
-            self.label1.setGeometry(rec1.x() - 13, rec1.y(), rec1.width(), rec1.height())
+            if ((rec1.x() + 20) > (user32.GetSystemMetrics(78) - 1345)):
+                self.pix3 = QPixmap('pictures/frogLeft.png')
+                self.label1.setPixmap(self.pix3)
+                self.label1.setGeometry(rec1.x() - 20, rec1.y(), rec1.width(), rec1.height())
 
         if key == Qt.Key_D:
-            self.label2.setGeometry(rec2.x() + 13, rec2.y(), rec2.width(), rec2.height())
+            if((rec2.x() + 13) < (user32.GetSystemMetrics(78)-50)):
+                self.label2.setGeometry(rec2.x() + 13, rec2.y(), rec2.width(), rec2.height())
         elif key == Qt.Key_S:
-            self.label2.setGeometry(rec2.x(), rec2.y() + 13, rec2.width(), rec2.height())
+            if ((rec2.y() + 58) < user32.GetSystemMetrics(79) - 50):
+                self.label2.setGeometry(rec2.x(), rec2.y() + 58, rec2.width(), rec2.height())
         elif key == Qt.Key_W:
-            self.label2.setGeometry(rec2.x(), rec2.y() - 13, rec2.width(), rec2.height())
+            if ((rec2.y() + 58) > 30):
+                self.label2.setGeometry(rec2.x(), rec2.y() - 58, rec2.width(), rec2.height())
         elif key == Qt.Key_A:
-            self.label2.setGeometry(rec2.x() - 13, rec2.y(), rec2.width(), rec2.height())
+            if ((rec2.x() + 13) > (user32.GetSystemMetrics(78) - 1345)):
+                self.label2.setGeometry(rec2.x() - 13, rec2.y(), rec2.width(), rec2.height())
+
+        if key == Qt.Key_Escape:
+            sys.exit(app.exec_())
 
     def closeEvent(self, event):
         self.key_notifier.die()
-
 
 class KeyNotifier(QObject):
 
@@ -148,7 +165,6 @@ class CarMove(QWidget):
 
         while True:
             self.label4.setGeometry(rec2.x() + 1, rec2.y(), rec2.width(), rec2.height())
-
 
 
 if __name__ == "__main__":

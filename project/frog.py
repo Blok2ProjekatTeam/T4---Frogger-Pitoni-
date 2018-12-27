@@ -1,7 +1,7 @@
 import sys
 
-from PyQt5.QtCore import QSize
-from PyQt5.QtGui import QImage, QPalette, QBrush
+from PyQt5.QtCore import QSize, QObject
+from PyQt5.QtGui import QImage, QPalette, QBrush, QIcon
 from PyQt5.QtWidgets import *
 
 
@@ -20,7 +20,12 @@ class MainWindow(QWidget):
        self.label = QLabel('', self)                        # test, if it's really backgroundimage
        self.label.setGeometry(50,50,200,50)
 
+       self.action = QAction(QIcon(), "Down", self)
+       self.action.setShortcut("ESC")
+       self.action.setShortcutContext(Qt.ApplicationShortcut)
+       self.addAction(self.action)
 
+       QObject.connect(self.action, SIGNAL("triggered()"), self.down)
        self.show()
 
     def Exit(self, event):

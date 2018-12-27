@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="579cfd2f-98a3-4f22-b9ad-564276935d0e" name="Default Changelist" comment="" />
+    <list default="true" id="579cfd2f-98a3-4f22-b9ad-564276935d0e" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frog.py" beforeDir="false" afterPath="$PROJECT_DIR$/frog.py" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -13,8 +16,21 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/frog.py">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="-117">
               <caret line="2" column="30" selection-start-line="2" selection-start-column="30" selection-end-line="2" selection-end-column="30" />
+=======
+<<<<<<< HEAD
+            <state relative-caret-position="1063">
+              <caret line="131" selection-start-line="131" selection-end-line="131" />
+=======
+            <state relative-caret-position="342">
+              <caret line="25" column="12" selection-start-line="25" selection-start-column="12" selection-end-line="25" selection-end-column="12" />
+>>>>>>> 7957a66343456c1d5838d17557f112cfec098d91
+              <folding>
+                <element signature="e#0#10#0" expanded="true" />
+              </folding>
+>>>>>>> 731677b9519669951070ac1f6a171031518f9995
             </state>
           </provider>
         </entry>
@@ -43,7 +59,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -55,6 +70,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -141,8 +157,21 @@
     <entry file="file://$PROJECT_DIR$/frog" />
     <entry file="file://$PROJECT_DIR$/frog.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="-117">
           <caret line="2" column="30" selection-start-line="2" selection-start-column="30" selection-end-line="2" selection-end-column="30" />
+=======
+<<<<<<< HEAD
+        <state relative-caret-position="1063">
+          <caret line="131" selection-start-line="131" selection-end-line="131" />
+=======
+        <state relative-caret-position="342">
+          <caret line="25" column="12" selection-start-line="25" selection-start-column="12" selection-end-line="25" selection-end-column="12" />
+>>>>>>> 7957a66343456c1d5838d17557f112cfec098d91
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+>>>>>>> 731677b9519669951070ac1f6a171031518f9995
         </state>
       </provider>
     </entry>

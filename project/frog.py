@@ -1,13 +1,7 @@
 import sys
-<<<<<<< HEAD
-
-from PyQt5.QtCore import QSize, QObject
-from PyQt5.QtGui import QImage, QPalette, QBrush, QIcon
-=======
 from PyQt5.QtCore import QSize,Qt
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtGui import QImage, QPalette, QBrush
->>>>>>> 731677b9519669951070ac1f6a171031518f9995
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import QThread, QObject, pyqtSignal, pyqtSlot
 
@@ -32,12 +26,14 @@ class SimMoveDemo(QWidget):
         self.setPalette(palette)
 
 
+        self.car_move = CarMove(self)
 
         self.label = QLabel('', self)  # test, if it's really backgroundimage
         self.label.setGeometry(50, 50, 200, 50)
         self.__init_ui__()
 
         self.key_notifier = KeyNotifier()
+
         self.key_notifier.key_signal.connect(self.__update_position__)
         self.key_notifier.start()
 
@@ -48,7 +44,8 @@ class SimMoveDemo(QWidget):
 
 
         self.label2.setPixmap(self.pix2)
-        self.label2.setGeometry(300, 1000, 50, 50)
+        self.label2.setGeometry(300, 1000, 60, 60)
+
 
         self.setWindowTitle('Sim Slide')
         self.show()
@@ -84,6 +81,7 @@ class SimMoveDemo(QWidget):
     def closeEvent(self, event):
         self.key_notifier.die()
 
+
 class KeyNotifier(QObject):
 
     key_signal = pyqtSignal(int)
@@ -113,15 +111,6 @@ class KeyNotifier(QObject):
     def rem_key(self, key):
         self.keys.remove(key)
 
-<<<<<<< HEAD
-       self.action = QAction(QIcon(), "Down", self)
-       self.action.setShortcut("ESC")
-       self.action.setShortcutContext(Qt.ApplicationShortcut)
-       self.addAction(self.action)
-
-       QObject.connect(self.action, SIGNAL("triggered()"), self.down)
-       self.show()
-=======
     def die(self):
         """
         End notifications.
@@ -138,14 +127,29 @@ class KeyNotifier(QObject):
             for k in self.keys:
                 self.key_signal.emit(k)
             time.sleep(0.05)
->>>>>>> 731677b9519669951070ac1f6a171031518f9995
 
-    def Exit(self, event):
-        reply = QMessageBox.question(self, 'Quit', 'Are You Sure to Quit?', QMessageBox.No | QMessageBox.Yes)
-        if reply == QMessageBox.Yes:
-            event.accept()
-        else:
-            event.ignore()
+
+class CarMove(QWidget):
+    def __init__(self,parent):
+        super().__init__(parent)
+        self.pix = QPixmap('greenCarLeft.png')
+        self.label4 = QLabel(self)
+        self.initPosition()
+
+    def initPosition(self):
+        self.label4.setPixmap(self.pix)
+        self.label4.setGeometry(70, 595, 140, 60)
+
+        self.show()
+
+    def _update_position(self, key):
+        rec2 = self.label4.geometry()
+
+
+        while True:
+            self.label4.setGeometry(rec2.x() + 1, rec2.y(), rec2.width(), rec2.height())
+
+
 
 if __name__ == "__main__":
 

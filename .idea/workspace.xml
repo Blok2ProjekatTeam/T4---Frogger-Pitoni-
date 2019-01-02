@@ -12,13 +12,25 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/project/frog.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="152">
-              <caret line="194" column="42" lean-forward="true" selection-start-line="194" selection-start-column="42" selection-end-line="194" selection-end-column="42" />
+            <state relative-caret-position="4539">
+              <caret line="267" column="32" lean-forward="true" selection-start-line="267" selection-start-column="32" selection-end-line="267" selection-end-column="32" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/project/Move_Object.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="344">
+              <caret line="242" column="95" selection-start-line="242" selection-start-column="95" selection-end-line="242" selection-end-column="95" />
+              <folding>
+                <element signature="e#0#13#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -28,7 +40,7 @@
         <entry file="file://$PROJECT_DIR$/project/objectMovement.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="680">
-              <caret line="40" lean-forward="true" selection-start-line="40" selection-end-line="40" />
+              <caret line="40" selection-start-line="40" selection-end-line="40" />
               <folding>
                 <element signature="e#0#63#0" expanded="true" />
               </folding>
@@ -53,10 +65,12 @@
       <list>
         <option value="$PROJECT_DIR$/project/objectMovement.py" />
         <option value="$PROJECT_DIR$/project/frog.py" />
+        <option value="$PROJECT_DIR$/project/pictures/MoveObj.py" />
+        <option value="$PROJECT_DIR$/project/Move_Object.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="258" />
     <option name="y" value="-10" />
     <option name="width" value="1346" />
@@ -67,7 +81,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -80,16 +93,11 @@
               <item name="T4---Frogger-Pitoni-" type="462c0819:PsiDirectoryNode" />
               <item name="project" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="T4---Frogger-Pitoni-" type="b2602c69:ProjectViewProjectNode" />
-              <item name="T4---Frogger-Pitoni-" type="462c0819:PsiDirectoryNode" />
-              <item name="project" type="462c0819:PsiDirectoryNode" />
-              <item name="pictures" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -150,13 +158,14 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1688988" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1688988" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.29787233" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.29787233" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39934534" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -194,19 +203,32 @@
     <entry file="file://$PROJECT_DIR$/project/objectMovement.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="680">
-          <caret line="40" lean-forward="true" selection-start-line="40" selection-end-line="40" />
+          <caret line="40" selection-start-line="40" selection-end-line="40" />
           <folding>
             <element signature="e#0#63#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/project/pictures/MoveObj.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/project/frog.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="194" column="42" lean-forward="true" selection-start-line="194" selection-start-column="42" selection-end-line="194" selection-end-column="42" />
+        <state relative-caret-position="4539">
+          <caret line="267" column="32" lean-forward="true" selection-start-line="267" selection-start-column="32" selection-end-line="267" selection-end-column="32" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project/Move_Object.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="344">
+          <caret line="242" column="95" selection-start-line="242" selection-start-column="95" selection-end-line="242" selection-end-column="95" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
           </folding>
         </state>
       </provider>

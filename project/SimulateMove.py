@@ -3,6 +3,7 @@ from ObjectMovement import *
 from Car import *
 import ctypes
 from KeyNotifier import *
+#from Menu import *
 
 user32 = ctypes.windll.user32
 
@@ -254,7 +255,10 @@ class SimMoveDemo(QWidget):
                 self.label2.setGeometry(rec2.x() - 13, rec2.y(), rec2.width(), rec2.height())
 
         if key == Qt.Key_Escape:
-            sys.exit()
+            #self.playAgain = Menu()
+            #self.playAgain.show()
+            self.close()
+
 
     def closeEvent(self, event):
         self.key_notifier.die()

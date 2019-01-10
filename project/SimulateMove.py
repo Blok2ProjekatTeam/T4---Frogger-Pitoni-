@@ -5,6 +5,8 @@ from KeyNotifier import *
 import ctypes
 from Rectangle import *
 from Config import *
+from Suprise import *
+
 
 user32 = ctypes.windll.user32
 
@@ -14,8 +16,6 @@ class SimMoveDemo(QWidget):
         super().__init__()
         QWidget.__init__(self)
         Config.window = self
-        self.pix1 = QPixmap('pictures/frog1.png')
-        self.pix2 = QPixmap('pictures/frog1.png')
 
         self.label1 = QLabel(self)
         self.label2 = QLabel(self)
@@ -24,30 +24,52 @@ class SimMoveDemo(QWidget):
         self.setFixedSize(self.size())
         self.showFullScreen()
 
-        self.frog1 = Rectangle(user32.GetSystemMetrics(78) - 750, user32.GetSystemMetrics(79) - 75, 70, 60,"frog")
-        self.frog2 = Rectangle(user32.GetSystemMetrics(78) - 1380, user32.GetSystemMetrics(79) - 75, 70, 60,"frog")
-
         oImage = QImage("pictures/backGround.png")
         sImage = oImage.scaled(QSize(user32.GetSystemMetrics(78), user32.GetSystemMetrics(79)))
         palette = QPalette()
         palette.setBrush(10, QBrush(sImage))  # 10 = Windowrole
         self.setPalette(palette)
 
+
         # Car Move
         self.car_move = Car(self)
         self.car_move.initPosition()
         self.car_move.carMovement = CarMovement()
         self.car_move.carMovement.carMovementSignal.connect(self.car_move._update_position)
+        self.car_move.vremeSignal = VremeSignal()
+        self.car_move.vremeSignal.timeSignal.connect(self.car_move.change_weather)
+        self.car_move.vremeSignal.start()
         self.car_move.carMovement.start()
         # self.car_move.__init__(self)
+
+        #FLY
+        self.suprise = Suprise(self)
+        self.suprise.supriseSign = SupriseSignal()
+        self.suprise.supriseSign.supriseSig.connect(self.suprise.initPosition)
+        self.suprise.supriseSign.start()
 
         self.refresh = Refresh()
         self.refresh.refreshSignal.connect(self.__check_position__)
         self.refresh.start()
 
+        # Wood Move
+        self.objectMovement = Move_Obj(self)
+        # self.objectMovement.__init__(self)
+        self.objectMovement.initPosition()
+        self.objectMovement.ObjectMovement = ObjectMovement()
+        self.objectMovement.ObjectMovement.objMovementSignal.connect(self.objectMovement._update_position)
+        self.objectMovement.ObjectMovement.start()
+
+        self.objectMovement.vremeSignal = VremeSignal()
+        self.objectMovement.vremeSignal.timeSignal.connect(self.objectMovement.checkWeather)
+        self.objectMovement.vremeSignal.start()
 
       #  self.car_move = CarMove(self)
 
+        self.frog1 = Rectangle(user32.GetSystemMetrics(78) - 750, user32.GetSystemMetrics(79) - 75, 70, 60, "frog")
+        self.frog2 = Rectangle(user32.GetSystemMetrics(78) - 1380, user32.GetSystemMetrics(79) - 75, 70, 60, "frog")
+        self.pix1 = QPixmap('pictures/frog1.png')
+        self.pix2 = QPixmap('pictures/frog1.png')
         self.label = QLabel('', self)  # test, if it's really backgroundimage
         self.label.setGeometry(50, 50, 200, 50)
         self.__init_ui__()
@@ -80,27 +102,28 @@ class SimMoveDemo(QWidget):
         self.frog2.labelSet('pictures/frog1.png')
 
     def __check_position__(self):
-        if(self.frog1.y < 498):
-            if (self.frog1.intersectsCars()):
+        if(self.frog1.y > 498):
+            if (not self.frog1.intersectsCars()):
                 self.frog1.x = user32.GetSystemMetrics(78) - 750
                 self.frog1.y = user32.GetSystemMetrics(79) - 75
                 self.frog1.labelSet('pictures/frog1.png')
         else:
-            if (not self.frog1.intersectsWood()):
+            if (self.frog1.intersectsWood()):
                 self.frog1.x = user32.GetSystemMetrics(78) - 750
                 self.frog1.y = user32.GetSystemMetrics(79) - 75
                 self.frog1.labelSet('pictures/frog1.png')
 
-        if (self.frog2.y < 498):
-            if (self.frog2.intersectsCars()):
+        if (self.frog2.y > 498):
+            if (not self.frog2.intersectsCars()):
                 self.frog2.x = user32.GetSystemMetrics(78) - 1380
                 self.frog2.y = user32.GetSystemMetrics(79) - 75
                 self.frog2.labelSet('pictures/frog1.png')
         else:
-            if (not self.frog2.intersectsWood()):
+            if (self.frog2.intersectsWood()):
                 self.frog2.x = user32.GetSystemMetrics(78) - 1380
                 self.frog2.y = user32.GetSystemMetrics(79) - 75
                 self.frog2.labelSet('pictures/frog1.png')
+
 
     def __update_position__(self, key):
         rec1 = self.frog1.GetPosition()
@@ -134,7 +157,11 @@ class SimMoveDemo(QWidget):
 
         if key == Qt.Key_Escape:
             self.car_move.carMovement.die()
+            self.objectMovement.ObjectMovement.die()
             self.refresh.die()
+            self.car_move.vremeSignal.die()
+            self.objectMovement.vremeSignal.die()
+            self.suprise.supriseSign.die()
             sys.exit()
 
     def closeEvent(self, event):

@@ -10,7 +10,7 @@ class Move_Obj(QWidget):
     def __init__(self, parent):
         super().__init__(parent)
 
-        self.woodLarge1 = Rectangle(0, 249, 360, 83, "wood")
+        self.woodLarge1 = Rectangle(0, 249, 369, 83, "wood")
         self.woodLarge2 = Rectangle(600, 249, 360, 83, "wood")
         self.woodLarge3 = Rectangle(1200, 249, 360, 83, "wood")
         self.woodLarge4 = Rectangle(1800, 249, 360, 83, "wood")
@@ -60,6 +60,12 @@ class Move_Obj(QWidget):
         self.turtle214 = Rectangle(220, 415, 70, 83, "turtle")
         self.turtle215 = Rectangle(150, 415, 70, 83, "turtle")
 
+        self.rain = Rectangle(0, -1080, 1920, 1080, "rain")
+        self.rain2 = Rectangle(0, -2160, 1920, 1080, "rain")
+
+        self.snow = Rectangle(0, -1080, 1920, 1080, "snow")
+        self.snow2 = Rectangle(0, -2160, 1920, 1080, "snow")
+
     def initPosition(self):
         self.woodLarge1.labelSet('pictures/woodLarge.png')
         self.woodLarge2.labelSet('pictures/woodLarge.png')
@@ -105,6 +111,12 @@ class Move_Obj(QWidget):
         self.turtle213.labelSet('pictures/turtle1.png')
         self.turtle214.labelSet('pictures/turtle1.png')
         self.turtle215.labelSet('pictures/turtle1.png')
+
+        self.rain.labelSet('pictures/rain.png')
+        self.rain2.labelSet('pictures/rain.png')
+
+        self.snow.labelSet('pictures/snow.png')
+        self.snow2.labelSet('pictures/snow.png')
 
         self.show()
 
@@ -359,6 +371,50 @@ class Move_Obj(QWidget):
             self.turtle112.move(rec1[0] + 1990, rec1[1], rec1[2], rec1[3], 'pictures/turtle1.png')
         else:
             self.turtle112.move(rec1[0] - Config.speedturtle, rec1[1], rec1[2], rec1[3], 'pictures/turtle1.png')
+
+        rec1 = self.snow.GetSize()
+        if (Config.vreme == "snow"):
+            if (rec1[1] > 1080):
+                self.snow.move(rec1[0], -1080, rec1[2], rec1[3], 'pictures/snow.png')
+            else:
+                self.snow.move(rec1[0], rec1[1] + 5, rec1[2], rec1[3], 'pictures/snow.png')
+
+        rec1 = self.snow2.GetSize()
+        if (Config.vreme == "snow"):
+            if (rec1[1] > 1080):
+                self.snow2.move(rec1[0], -1080, rec1[2], rec1[3], 'pictures/snow.png')
+            else:
+                self.snow2.move(rec1[0], rec1[1] + 5, rec1[2], rec1[3], 'pictures/snow.png')
+
+        # padanje kise
+        rec1 = self.rain.GetSize()
+        if (Config.vreme == "rain"):
+            if (rec1[1] > 1080):
+                self.rain.move(rec1[0], -1080, rec1[2], rec1[3], 'pictures/rain.png')
+            else:
+                self.rain.move(rec1[0], rec1[1] + 10, rec1[2], rec1[3], 'pictures/rain.png')
+
+        rec1 = self.rain2.GetSize()
+        if (Config.vreme == "rain"):
+            if (rec1[1] > 1080):
+                self.rain2.move(rec1[0], -1080, rec1[2], rec1[3], 'pictures/rain.png')
+            else:
+                self.rain2.move(rec1[0], rec1[1] + 10, rec1[2], rec1[3], 'pictures/rain.png')
+
+        if (Config.vreme == "normal"):
+            self.snow.move(rec1[0], -1080, rec1[2], rec1[3], 'pictures/snow.png')
+            self.snow2.move(rec1[0], -2160, rec1[2], rec1[3], 'pictures/snow.png')
+            self.rain.move(rec1[0], -1080, rec1[2], rec1[3], 'pictures/rain.png')
+            self.rain2.move(rec1[0], -2160, rec1[2], rec1[3], 'pictures/rain.png')
+
+        if (Config.vreme == "rain"):
+            self.snow.move(rec1[0], -1080, rec1[2], rec1[3], 'pictures/snow.png')
+            self.snow2.move(rec1[0], -2160, rec1[2], rec1[3], 'pictures/snow.png')
+
+        if (Config.vreme == "snow"):
+            self.rain.move(rec1[0], -1080, rec1[2], rec1[3], 'pictures/rain.png')
+            self.rain2.move(rec1[0], -2160, rec1[2], rec1[3], 'pictures/rain.png')
+
 
     def checkWeather(self):
         if Config.vreme == "snow":

@@ -48,6 +48,7 @@ class SimMoveDemo(QWidget):
         self.suprise.supriseSign.supriseSig.connect(self.suprise.initPosition)
         self.suprise.supriseSign.start()
 
+
         self.refresh = Refresh()
         self.refresh.refreshSignal.connect(self.__check_position__)
         self.refresh.start()
@@ -107,6 +108,10 @@ class SimMoveDemo(QWidget):
                 self.frog1.x = user32.GetSystemMetrics(78) - 750
                 self.frog1.y = user32.GetSystemMetrics(79) - 75
                 self.frog1.labelSet('pictures/frog1.png')
+
+            if (not self.frog1.intersectsFly()):
+                self.suprise.hideFly()
+
         else:
             if (self.frog1.intersectsWood()):
                 self.frog1.x = user32.GetSystemMetrics(78) - 750
@@ -118,11 +123,14 @@ class SimMoveDemo(QWidget):
                 self.frog2.x = user32.GetSystemMetrics(78) - 1380
                 self.frog2.y = user32.GetSystemMetrics(79) - 75
                 self.frog2.labelSet('pictures/frog1.png')
+            if (not self.frog2.intersectsFly()):
+                self.suprise.hideFly()
         else:
             if (self.frog2.intersectsWood()):
                 self.frog2.x = user32.GetSystemMetrics(78) - 1380
                 self.frog2.y = user32.GetSystemMetrics(79) - 75
                 self.frog2.labelSet('pictures/frog1.png')
+
 
 
     def __update_position__(self, key):

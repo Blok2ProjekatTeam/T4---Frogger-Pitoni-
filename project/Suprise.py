@@ -10,12 +10,17 @@ class Suprise(QWidget):
     def __init__(self, parent):
         super().__init__(parent)
 
-        self.suprise = Rectangle(user32.GetSystemMetrics(78) - random.randint(0,1920), user32.GetSystemMetrics(79) - 83*random.randint(0,6), 130, 83, "suprise")
+        self.suprise = Rectangle(user32.GetSystemMetrics(78) - random.randint(0,1920), user32.GetSystemMetrics(79) - 83*random.randint(0,6), 50, 83, "suprise")
 
     def initPosition(self):
         self.suprise.labelSet('pictures/fly.png')
 
         self.show()
+
+    def hideFly(self):
+        self.suprise.x = 0
+        self.suprise.y = 0
+
 
 
 class SupriseSignal(QObject):
@@ -53,5 +58,5 @@ class SupriseSignal(QObject):
         A slot with no params.
         """
         while not self.is_done:
-            time.sleep(15)
+            time.sleep(4)
             self.supriseSig.emit()

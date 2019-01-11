@@ -92,6 +92,21 @@ class Rectangle(QWidget):
 
         return True
 
+    def intersectsFly(self):
+        left, top, right, bottom = self.GetSide()
+        for checkForLayer in self.allRectangles.keys():
+            if (checkForLayer == "suprise"):
+                for obj in self.allRectangles[checkForLayer]:
+                    oleft, otop, oright, obottom = obj.GetSide()
+                    if not (
+                        left >= oright or
+                        right <= oleft or
+                        top >= obottom or
+                        bottom <= otop):
+                        return False
+
+        return True
+
     def intersectsWood(self):
         left, top, right, bottom = self.GetSide()
         for checkForLayer in self.allRectangles.keys():
@@ -162,3 +177,4 @@ class Rectangle(QWidget):
 
     def GetPosition(self):
         return(self.x,self.y)
+

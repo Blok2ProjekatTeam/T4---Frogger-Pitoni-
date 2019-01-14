@@ -1,6 +1,8 @@
 import sys
-from Car import*
 from Config import *
+from PyQt5.QtWidgets import *
+from PyQt5.QtGui import *
+from PyQt5.QtCore import *
 
 import ctypes
 user32 = ctypes.windll.user32
@@ -16,6 +18,7 @@ class Rectangle(QWidget):
         self.w = width
         self.h = hight
         self.type = type
+        self.speed = 0
 
         if(type == "frog"):
             self.id = Config.frogId + 1
@@ -89,6 +92,21 @@ class Rectangle(QWidget):
 
         return True
 
+    def intersectsFly(self):
+        left, top, right, bottom = self.GetSide()
+        for checkForLayer in self.allRectangles.keys():
+            if (checkForLayer == "suprise"):
+                for obj in self.allRectangles[checkForLayer]:
+                    oleft, otop, oright, obottom = obj.GetSide()
+                    if not (
+                        left >= oright or
+                        right <= oleft or
+                        top >= obottom or
+                        bottom <= otop):
+                        return False
+
+        return True
+
     def intersectsWood(self):
         left, top, right, bottom = self.GetSide()
         for checkForLayer in self.allRectangles.keys():
@@ -100,9 +118,25 @@ class Rectangle(QWidget):
                         right <= oleft or
                         top >= obottom or
                         bottom <= otop):
+                        self.attachWood(obj)
+                        return False
+            if (checkForLayer == "turtle"):
+                for obj in self.allRectangles[checkForLayer]:
+                    oleft, otop, oright, obottom = obj.GetSide()
+                    if not (
+                        left >= oright or
+                        right <= oleft or
+                        top >= obottom or
+                        bottom <= otop):
+                        self.attachTurtle(obj)
                         return False
 
         return True
+
+    def attachWood(self,obj):
+        self.move(self.x + Config.speedwood, self.y, self.w, self.h,'pictures/frog1.png')
+    def attachTurtle(self,obj):
+        self.move(self.x + -Config.speedturtle, self.y, self.w, self.h,'pictures/frog1.png')
 
     def isEmpty(self,x,y,option):
         if(option == 1):

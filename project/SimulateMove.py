@@ -5,8 +5,9 @@ from KeyNotifier import *
 import ctypes
 from Rectangle import *
 from Config import *
+from Score import *
+from PyQt5 import QtGui
 from Suprise import *
-
 
 user32 = ctypes.windll.user32
 
@@ -16,9 +17,20 @@ class SimMoveDemo(QWidget):
         super().__init__()
         QWidget.__init__(self)
         Config.window = self
-
         self.label1 = QLabel(self)
         self.label2 = QLabel(self)
+
+        self.font = QtGui.QFont()
+        self.font.setFamily("Forte")
+        self.font.setPointSize(30)
+        self.levelLabel = QLabel(self)
+        self.scoreLabel1 = QLabel(self)
+        self.scoreLabel2 = QLabel(self)
+        self.liveLabel1 = QLabel(self)
+        self.liveLabel2 = QLabel(self)
+        self.levelLabel = QLabel(self)
+        self.modeLabel = QLabel(self)
+        self.gameOverLabel = QLabel(self) ############################################################################################################
 
         self.setGeometry(100, 100, 646, 559)
         self.setFixedSize(self.size())
@@ -30,24 +42,16 @@ class SimMoveDemo(QWidget):
         palette.setBrush(10, QBrush(sImage))  # 10 = Windowrole
         self.setPalette(palette)
 
-
         # Car Move
-        self.car_move = Car(self)
-        self.car_move.initPosition()
-        self.car_move.carMovement = CarMovement()
-        self.car_move.carMovement.carMovementSignal.connect(self.car_move._update_position)
-        self.car_move.vremeSignal = VremeSignal()
-        self.car_move.vremeSignal.timeSignal.connect(self.car_move.change_weather)
-        self.car_move.vremeSignal.start()
-        self.car_move.carMovement.start()
+        # self.car_move = Car(self)
+        # self.car_move.initPosition()
+        # self.car_move.carMovement = CarMovement()
+        # self.car_move.carMovement.carMovementSignal.connect(self.car_move._update_position)
+        # self.car_move.vremeSignal = VremeSignal()
+        # self.car_move.vremeSignal.timeSignal.connect(self.car_move.change_weather)
+        # self.car_move.vremeSignal.start()
+        # self.car_move.carMovement.start()
         # self.car_move.__init__(self)
-
-        #FLY
-        self.suprise = Suprise(self)
-        self.suprise.supriseSign = SupriseSignal()
-        self.suprise.supriseSign.supriseSig.connect(self.suprise.initPosition)
-        self.suprise.supriseSign.start()
-
 
         self.refresh = Refresh()
         self.refresh.refreshSignal.connect(self.__check_position__)
@@ -65,14 +69,19 @@ class SimMoveDemo(QWidget):
         self.objectMovement.vremeSignal.timeSignal.connect(self.objectMovement.checkWeather)
         self.objectMovement.vremeSignal.start()
 
+        self.suprise = Suprise(self)
+        self.suprise.supriseSign = SupriseSignal()
+        self.suprise.supriseSign.supriseSig.connect(self.suprise.initPosition)
+        self.suprise.supriseSign.start()
+
       #  self.car_move = CarMove(self)
 
         self.frog1 = Rectangle(user32.GetSystemMetrics(78) - 750, user32.GetSystemMetrics(79) - 75, 70, 60, "frog")
         self.frog2 = Rectangle(user32.GetSystemMetrics(78) - 1380, user32.GetSystemMetrics(79) - 75, 70, 60, "frog")
-        self.pix1 = QPixmap('pictures/frog1.png')
-        self.pix2 = QPixmap('pictures/frog1.png')
+
         self.label = QLabel('', self)  # test, if it's really backgroundimage
         self.label.setGeometry(50, 50, 200, 50)
+
         self.__init_ui__()
 
         self.key_notifier = KeyNotifier()
@@ -80,58 +89,233 @@ class SimMoveDemo(QWidget):
         self.key_notifier.key_signal.connect(self.__update_position__)
         self.key_notifier.start()
 
-        # **************************
-       # self.objectMovement = ObjectMovement()
-       # self.objectMovement.objMovementSignal.connect(self.move_obj)
-       # self.objectMovement.start()
-        # **************************
-
     def __init_ui__(self):
         self.frog1.labelSet('pictures/frog1.png')
 
         self.frog2.labelSet('pictures/frog1.png')
 
+        self.score1 = Score()
+        self.score2 = Score()
+
+        self.scoreLabel1.setFont(self.font)
+        self.scoreLabel1.setText('Score: ' + str(self.score1.score))
+        self.scoreLabel1.setGeometry(1450, -10, 500, 100)
+
+        self.scoreLabel2.setFont(self.font)
+        self.scoreLabel2.setText('Score: ' + str(self.score2.score))
+        self.scoreLabel2.setGeometry(280, -10, 500, 100)
+
+        self.liveLabel1.setFont(self.font)
+        self.liveLabel1.setText('Lives: ' + str(self.score1.lives))
+        self.liveLabel1.setGeometry(1770, -10, 500, 100)
+
+        self.liveLabel2.setFont(self.font)
+        self.liveLabel2.setText('Lives: ' + str(self.score2.lives))
+        self.liveLabel2.setGeometry(10, -10, 500, 100)
+
+        self.levelLabel.setFont(self.font)
+        self.levelLabel.setText('Level: ' + str(self.score1.level))
+        self.levelLabel.setGeometry(670, -10, 500, 100)
+
+        self.modeLabel.setFont(self.font)
+        self.modeLabel.setText('Mode: ')
+        self.modeLabel.setGeometry(1020, -10, 500, 100)
+
         self.setWindowTitle('Frogger')
         self.show()
 
     def keyPressEvent(self, event):
-        self.key_notifier.add_key(event.key())
-
-    def keyReleaseEvent(self, event):
-        self.key_notifier.rem_key(event.key())
-        self.frog1.labelSet('pictures/frog1.png')
-        self.frog2.labelSet('pictures/frog1.png')
+        if not event.isAutoRepeat():
+            self.key_notifier.add_key(event.key())
 
     def __check_position__(self):
-        if(self.frog1.y > 498):
+
+        if(not Config.flowerOne and not Config.flowerTwo and not Config.flowerThree and not Config.flowerFour and not Config.flowerFive):
+            self.frog1.refresh()
+            self.frog2.refresh()
+            Config.flowerOne = True
+            Config.flowerTwo = True
+            Config.flowerThree = True
+            Config.flowerFour = True
+            Config.flowerFive = True
+            self.frog1.x = user32.GetSystemMetrics(78) - 750
+            self.frog1.y = user32.GetSystemMetrics(79) - 75
+            self.frog1.labelSet('pictures/frog1.png')
+            self.frog2.x = user32.GetSystemMetrics(78) - 1380
+            self.frog2.y = user32.GetSystemMetrics(79) - 75
+            self.frog2.labelSet('pictures/frog1.png')
+            ############################################################################################################
+            if(self.score1.lives != 0):
+                self.score1.lives = 3
+                self.liveLabel1.setText('Lives: ' + str(self.score1.lives))
+                self.liveLabel1.setGeometry(1770, -10, 500, 100)
+            if(self.score2.lives != 0):
+                self.score2.lives = 3
+                self.liveLabel2.setFont(self.font)
+                self.liveLabel2.setText('Lives: ' + str(self.score2.lives))
+                self.liveLabel2.setGeometry(10, -10, 500, 100)
+            ############################################################################################################
+            self.score1.level += 1
+            self.score2.level += 1
+            self.levelLabel.setFont(self.font)
+            self.levelLabel.setText('Level: ' + str(self.score1.level))
+            self.levelLabel.setGeometry(670, -10, 500, 100)
+            self.score1.y = 1005
+            self.score2.y = 1005
+            Config.speedcar += self.score1.level
+            Config.speedfireman += self.score1.level
+            Config.speedyellow += self.score1.level
+            Config.speedkamion += self.score1.level
+            Config.speedgreen += self.score1.level
+            Config.speedwood += self.score1.level
+            Config.attachSpeedTurtle += self.score1.level
+            Config.attachSpeedWood += self.score1.level
+            Config.speedturtle += self.score1.level
+        ############################################################################################################
+        if(self.score1.lives == 0 and self.score2.lives == 0):
+            self.font.setPointSize(80)
+            self.gameOverLabel.setFont(self.font)
+            if(self.score1.score > self.score2.score):
+                self.gameOverLabel.setText('GAME OVER! \nPlayer 1 wins! \nPress ESC to exit. ')
+                self.gameOverLabel.setGeometry(500, 280, 1000, 500)
+            elif(self.score1.score < self.score2.score):
+                self.gameOverLabel.setText('GAME OVER! \nPlayer 2 wins! \nPress ESC to exit. ')
+                self.gameOverLabel.setGeometry(500, 280, 1000, 500)
+            else:
+                self.gameOverLabel.setText('GAME OVER! \nDraw! \nPress ESC to exit. ')
+                self.gameOverLabel.setGeometry(500, 280, 1000, 500)
+        self.font.setPointSize(30)
+        ############################################################################################################
+
+        if(Config.vreme == "snow"):
+            self.modeLabel.setFont(self.font)
+            self.modeLabel.setText('Mode: Snow')
+            self.modeLabel.setGeometry(1020, -10, 500, 100)
+        elif (Config.vreme == "rain"):
+            self.modeLabel.setFont(self.font)
+            self.modeLabel.setText('Mode: Rain')
+            self.modeLabel.setGeometry(1020, -10, 500, 100)
+        elif (Config.vreme == "normal"):
+            self.modeLabel.setFont(self.font)
+            self.modeLabel.setText('Mode: Normal')
+            self.modeLabel.setGeometry(1020, -10, 500, 100)
+
+        ############################################################################################################
+        if (self.score1.lives != 0):
+            self.frog1.labelSet('pictures/frog1.png')
+        elif (self.score1.lives == 0):
+            self.frog1.x = user32.GetSystemMetrics(78) - 8000
+            self.frog1.y = user32.GetSystemMetrics(79) - 8000
+            self.frog1.labelSet('pictures/frog1.png')
+
+        if (self.score2.lives != 0):
+            self.frog2.labelSet('pictures/frog1.png')
+        elif (self.score2.lives == 0):
+            self.frog2.x = user32.GetSystemMetrics(78) - 8000
+            self.frog2.y = user32.GetSystemMetrics(79) - 8000
+            self.frog2.labelSet('pictures/frog1.png')
+        ############################################################################################################
+        if (self.frog1.y > 498):
             if (not self.frog1.intersectsCars()):
-                self.frog1.x = user32.GetSystemMetrics(78) - 750
-                self.frog1.y = user32.GetSystemMetrics(79) - 75
-                self.frog1.labelSet('pictures/frog1.png')
+                if (self.score1.lives == 1):
+                    self.frog1.labelSet('pictures/skull.png')
+                    self.score1.lives -= 1
+                    self.liveLabel1.setFont(self.font)
+                    self.liveLabel1.setText('Lives: ' + str(self.score1.lives))
+                    self.liveLabel1.setGeometry(1770, -10, 500, 100)
+                else:
+                    self.frog1.x = user32.GetSystemMetrics(78) - 750
+                    self.frog1.y = user32.GetSystemMetrics(79) - 75
+                    self.frog1.labelSet('pictures/frog1.png')
+                    self.score1.lives -= 1
+                    self.liveLabel1.setFont(self.font)
+                    self.liveLabel1.setText('Lives: ' + str(self.score1.lives))
+                    self.liveLabel1.setGeometry(1770, -10, 500, 100)
 
             if (not self.frog1.intersectsFly()):
-                self.suprise.hideFly()
+                if(self.suprise.hideFly() == 0):
+                    self.score1.lives += 1
+                    self.liveLabel1.setFont(self.font)
+                    self.liveLabel1.setText('Lives: ' + str(self.score1.lives))
+                    self.liveLabel1.setGeometry(1770, -10, 500, 100)
+                else:
+                    self.score1.lives -= 1
+                    self.liveLabel1.setFont(self.font)
+                    self.liveLabel1.setText('Lives: ' + str(self.score1.lives))
+                    self.liveLabel1.setGeometry(1770, -10, 500, 100)
 
-        else:
+        elif(92 <= self.frog1.y <= 498):
             if (self.frog1.intersectsWood()):
-                self.frog1.x = user32.GetSystemMetrics(78) - 750
-                self.frog1.y = user32.GetSystemMetrics(79) - 75
-                self.frog1.labelSet('pictures/frog1.png')
+                if (self.score1.lives == 1):
+                    self.frog1.labelSet('pictures/skull.png')
+                    self.score1.lives -= 1
+                    self.liveLabel1.setFont(self.font)
+                    self.liveLabel1.setText('Lives: ' + str(self.score1.lives))
+                    self.liveLabel1.setGeometry(1770, -10, 500, 100)
+                else:
+                    self.frog1.x = user32.GetSystemMetrics(78) - 750
+                    self.frog1.y = user32.GetSystemMetrics(79) - 75
+                    self.frog1.labelSet('pictures/frog1.png')
+                    self.score1.lives -= 1
+                    self.liveLabel1.setFont(self.font)
+                    self.liveLabel1.setText('Lives: ' + str(self.score1.lives))
+                    self.liveLabel1.setGeometry(1770, -10, 500, 100)
+        elif(self.score1.lives > 0):
+            self.frog1.x = user32.GetSystemMetrics(78) - 750
+            self.frog1.y = user32.GetSystemMetrics(79) - 75
+            self.frog1.labelSet('pictures/frog1.png')
+            self.score1.y = 1005
 
         if (self.frog2.y > 498):
             if (not self.frog2.intersectsCars()):
-                self.frog2.x = user32.GetSystemMetrics(78) - 1380
-                self.frog2.y = user32.GetSystemMetrics(79) - 75
-                self.frog2.labelSet('pictures/frog1.png')
+                if (self.score2.lives == 1):
+                    self.frog2.labelSet('pictures/skull.png')
+                    self.score2.lives -= 1
+                    self.liveLabel2.setFont(self.font)
+                    self.liveLabel2.setText('Lives: ' + str(self.score2.lives))
+                    self.liveLabel2.setGeometry(10, -10, 500, 100)
+                else:
+                    self.frog2.x = user32.GetSystemMetrics(78) - 1380
+                    self.frog2.y = user32.GetSystemMetrics(79) - 75
+                    self.frog2.labelSet('pictures/frog1.png')
+                    self.score2.lives -= 1
+                    self.liveLabel2.setFont(self.font)
+                    self.liveLabel2.setText('Lives: ' + str(self.score2.lives))
+                    self.liveLabel2.setGeometry(10, -10, 500, 100)
+
             if (not self.frog2.intersectsFly()):
-                self.suprise.hideFly()
-        else:
+                if(self.suprise.hideFly() == 0):
+                    self.score2.lives += 1
+                    self.liveLabel2.setFont(self.font)
+                    self.liveLabel2.setText('Lives: ' + str(self.score2.lives))
+                    self.liveLabel2.setGeometry(10, -10, 500, 100)
+                else:
+                    self.score2.lives -= 1
+                    self.liveLabel2.setFont(self.font)
+                    self.liveLabel2.setText('Lives: ' + str(self.score2.lives))
+                    self.liveLabel2.setGeometry(10, -10, 500, 100)
+
+        elif(92 <= self.frog2.y <= 498):
             if (self.frog2.intersectsWood()):
-                self.frog2.x = user32.GetSystemMetrics(78) - 1380
-                self.frog2.y = user32.GetSystemMetrics(79) - 75
-                self.frog2.labelSet('pictures/frog1.png')
-
-
+                if (self.score2.lives == 1):
+                    self.frog2.labelSet('pictures/skull.png')
+                    self.score2.lives -= 1
+                    self.liveLabel2.setFont(self.font)
+                    self.liveLabel2.setText('Lives: ' + str(self.score2.lives))
+                    self.liveLabel2.setGeometry(10, -10, 500, 100)
+                else:
+                    self.frog2.x = user32.GetSystemMetrics(78) - 1380
+                    self.frog2.y = user32.GetSystemMetrics(79) - 75
+                    self.frog2.labelSet('pictures/frog1.png')
+                    self.score2.lives -= 1
+                    self.liveLabel2.setFont(self.font)
+                    self.liveLabel2.setText('Lives: ' + str(self.score2.lives))
+                    self.liveLabel2.setGeometry(10, -10, 500, 100)
+        elif(self.score2.lives > 0):
+            self.frog2.x = user32.GetSystemMetrics(78) - 1380
+            self.frog2.y = user32.GetSystemMetrics(79) - 75
+            self.frog2.labelSet('pictures/frog1.png')
+            self.score2.y = 1005
 
     def __update_position__(self, key):
         rec1 = self.frog1.GetPosition()
@@ -139,35 +323,53 @@ class SimMoveDemo(QWidget):
 
         if key == Qt.Key_Right:
             if((rec1[0] + 50) < (user32.GetSystemMetrics(78)-50) and self.frog1.isEmpty(50,0,1)):
-                self.frog1.move(rec1[0] + 50, rec1[1], self.frog1.w, self.frog1.h, 'pictures/frogRight.png')
+                self.frog1.move(rec1[0] + Config.speedFrog, rec1[1], self.frog1.w, self.frog1.h, 'pictures/frogRight.png')
         elif key == Qt.Key_Down:
             if ((rec1[1] + 83) < user32.GetSystemMetrics(79) - 50 and self.frog1.isEmpty(0,83,1)):
                 self.frog1.move(rec1[0], rec1[1] + 83,self.frog1.w, self.frog1.h,'pictures/frogDown.png')
         elif key == Qt.Key_Up:
-            if ((rec1[1] - 83) > 0 and self.frog1.isEmpty(0,83,0)):
+            if ((rec1[1] - 83) > 0 and self.frog1.isEmpty(0,83,0) and self.frog1.final()):
                 self.frog1.move(rec1[0], rec1[1] -83,self.frog1.w, self.frog1.h, 'pictures/frogUp.png')
+                if(self.frog1.y < self.score1.y):
+                    self.score1.y = self.frog1.y
+                    if(self.score1.y == 9):
+                        self.score1.score += 100 * self.score1.level
+                    else:
+                        self.score1.score += 10
+                    self.scoreLabel1.setFont(self.font)
+                    self.scoreLabel1.setText('Score: ' + str(self.score1.score))
+                    self.scoreLabel1.setGeometry(1420, -10, 500, 100)
         elif key == Qt.Key_Left:
             if ((rec1[0] - 50) > 0 and self.frog1.isEmpty(50,0,0)):
-                self.frog1.move(rec1[0]-50, rec1[1],self.frog1.w, self.frog1.h, 'pictures/frogLeft.png')
+                self.frog1.move(rec1[0]- Config.speedFrog, rec1[1],self.frog1.w, self.frog1.h, 'pictures/frogLeft.png')
 
         if key == Qt.Key_D:
             if((rec2[0] + 50) < (user32.GetSystemMetrics(78)-50) and self.frog2.isEmpty(50,0,1)):
-                self.frog2.move(rec2[0] + 50, rec2[1], self.frog2.w, self.frog2.h, 'pictures/frogRight.png')
+                self.frog2.move(rec2[0] + Config.speedFrog, rec2[1], self.frog2.w, self.frog2.h, 'pictures/frogRight.png')
         elif key == Qt.Key_S:
             if ((rec2[1] + 83) < user32.GetSystemMetrics(79) - 50 and self.frog2.isEmpty(0,83,1)):
                 self.frog2.move(rec2[0], rec2[1] + 83, self.frog2.w, self.frog2.h, 'pictures/frogDown.png')
         elif key == Qt.Key_W:
-            if ((rec2[1] - 83) > 0 and self.frog2.isEmpty(0,83,0)):
+            if ((rec2[1] - 83) > 0 and self.frog2.isEmpty(0,83,0) and self.frog2.final()):
                 self.frog2.move(rec2[0], rec2[1] - 83, self.frog2.w, self.frog2.h, 'pictures/frogUp.png')
+                if (self.frog2.y < self.score2.y):
+                    self.score2.y = self.frog2.y
+                    if (self.score2.y == 9):
+                        self.score2.score += 100 * self.score2.level
+                    else:
+                        self.score2.score += 10
+                    self.scoreLabel2.setFont(self.font)
+                    self.scoreLabel2.setText('Score: ' + str(self.score2.score))
+                    self.scoreLabel2.setGeometry(280, -10, 500, 100)
         elif key == Qt.Key_A:
             if ((rec2[0] - 50) > 0 and self.frog2.isEmpty(50,0,0)):
-                self.frog2.move(rec2[0] - 50, rec2[1], self.frog2.w, self.frog2.h, 'pictures/frogLeft.png')
+                self.frog2.move(rec2[0] - Config.speedFrog, rec2[1], self.frog2.w, self.frog2.h, 'pictures/frogLeft.png')
 
         if key == Qt.Key_Escape:
-            self.car_move.carMovement.die()
+            #self.car_move.carMovement.die()
             self.objectMovement.ObjectMovement.die()
             self.refresh.die()
-            self.car_move.vremeSignal.die()
+            #self.car_move.vremeSignal.die()
             self.objectMovement.vremeSignal.die()
             self.suprise.supriseSign.die()
             sys.exit()

@@ -19,6 +19,11 @@ class Rectangle(QWidget):
         self.h = hight
         self.type = type
         self.speed = 0
+        self.label1 = QLabel(Config.window)
+        self.label2 = QLabel(Config.window)
+        self.label3 = QLabel(Config.window)
+        self.label4 = QLabel(Config.window)
+        self.label5 = QLabel(Config.window)
 
         if(type == "frog"):
             self.id = Config.frogId + 1
@@ -29,9 +34,6 @@ class Rectangle(QWidget):
         elif(type == "car"):
             self.id = Config.carId + 1
             Config.carId += 1
-        elif(type == "turtle"):
-            self.id = Config.turtleId + 1
-            Config.turtleId += 1
 
         self.label = QLabel(Config.window)
 
@@ -99,10 +101,10 @@ class Rectangle(QWidget):
                 for obj in self.allRectangles[checkForLayer]:
                     oleft, otop, oright, obottom = obj.GetSide()
                     if not (
-                        left >= oright or
-                        right <= oleft or
-                        top >= obottom or
-                        bottom <= otop):
+                                            left >= oright or
+                                            right <= oleft or
+                                        top >= obottom or
+                                    bottom <= otop):
                         return False
 
         return True
@@ -133,10 +135,11 @@ class Rectangle(QWidget):
 
         return True
 
-    def attachWood(self,obj):
-        self.move(self.x + Config.speedwood, self.y, self.w, self.h,'pictures/frog1.png')
-    def attachTurtle(self,obj):
-        self.move(self.x + -Config.speedturtle, self.y, self.w, self.h,'pictures/frog1.png')
+    def attachWood(self, obj):
+        self.move(self.x + Config.attachSpeedWood, self.y, self.w, self.h, 'pictures/frog1.png')
+
+    def attachTurtle(self, obj):
+        self.move(self.x + -Config.attachSpeedTurtle, self.y, self.w, self.h, 'pictures/frog1.png')
 
     def isEmpty(self,x,y,option):
         if(option == 1):
@@ -177,4 +180,96 @@ class Rectangle(QWidget):
 
     def GetPosition(self):
         return(self.x,self.y)
+
+    def final(self):
+        left, top, right, bottom = self.GetSide()
+        if(top == 92):
+            if(user32.GetSystemMetrics(78) - 1775 <= left and left <= user32.GetSystemMetrics(78) - 1685 and Config.flowerOne == True):
+                Config.flowerOne = False
+                self.pix1 = QPixmap('pictures/frog1Down.png')
+                self.label1.setPixmap(self.pix1)
+                self.label1.setGeometry(user32.GetSystemMetrics(78) - 1760, 17, self.w, self.h)
+                self.label1.show()
+                return True
+            elif(user32.GetSystemMetrics(78) - 1390 <= left and left <= user32.GetSystemMetrics(78) - 1300 and Config.flowerTwo == True):
+                Config.flowerTwo = False
+                self.pix1 = QPixmap('pictures/frog1Down.png')
+                self.label2.setPixmap(self.pix1)
+                self.label2.setGeometry(user32.GetSystemMetrics(78) - 1380, 17, self.w, self.h)
+                self.label2.show()
+                return True
+            elif (user32.GetSystemMetrics(78) - 1010 <= left and left <= user32.GetSystemMetrics(78) - 920 and Config.flowerThree == True):
+                Config.flowerThree = False
+                self.pix1 = QPixmap('pictures/frog1Down.png')
+                self.label3.setPixmap(self.pix1)
+                self.label3.setGeometry(user32.GetSystemMetrics(78) - 1000, 17, self.w, self.h)
+                self.label3.show()
+                return True
+            elif (user32.GetSystemMetrics(78) - 625 <= left and left <= user32.GetSystemMetrics(78) - 535 and Config.flowerFour == True):
+                Config.flowerFour = False
+                self.pix1 = QPixmap('pictures/frog1Down.png')
+                self.label4.setPixmap(self.pix1)
+                self.label4.setGeometry(user32.GetSystemMetrics(78) - 610, 17, self.w, self.h)
+                self.label4.show()
+                return True
+            elif (user32.GetSystemMetrics(78) - 245 <= left and left <= user32.GetSystemMetrics(78) - 150 and Config.flowerFive == True):
+                Config.flowerFive = False
+                self.pix1 = QPixmap('pictures/frog1Down.png')
+                self.label5.setPixmap(self.pix1)
+                self.label5.setGeometry(user32.GetSystemMetrics(78) - 230, 17, self.w, self.h)
+                self.label5.show()
+                return True
+            elif (user32.GetSystemMetrics(78) - 1775 <= right and right <= user32.GetSystemMetrics(78) - 1685 and Config.flowerOne == True):
+                Config.flowerOne = False
+                self.pix1 = QPixmap('pictures/frog1Down.png')
+                self.label1.setPixmap(self.pix1)
+                self.label1.setGeometry(user32.GetSystemMetrics(78) - 1760, 17, self.w, self.h)
+                self.label1.show()
+                return True
+            elif (user32.GetSystemMetrics(78) - 1390 <= right and right <= user32.GetSystemMetrics(78) - 1300 and Config.flowerTwo == True):
+                Config.flowerTwo = False
+                self.pix1 = QPixmap('pictures/frog1Down.png')
+                self.label2.setPixmap(self.pix1)
+                self.label2.setGeometry(user32.GetSystemMetrics(78) - 1380, 17, self.w, self.h)
+                self.label2.show()
+                return True
+            elif (user32.GetSystemMetrics(78) - 1010 <= right and right <= user32.GetSystemMetrics(78) - 920 and Config.flowerThree == True):
+                Config.flowerThree = False
+                self.pix1 = QPixmap('pictures/frog1Down.png')
+                self.label3.setPixmap(self.pix1)
+                self.label3.setGeometry(user32.GetSystemMetrics(78) - 1000, 17, self.w, self.h)
+                self.label3.show()
+                return True
+            elif (user32.GetSystemMetrics(78) - 625 <= right and right <= user32.GetSystemMetrics(78) - 535 and Config.flowerFour == True):
+                Config.flowerFour = False
+                self.pix1 = QPixmap('pictures/frog1Down.png')
+                self.label4.setPixmap(self.pix1)
+                self.label4.setGeometry(user32.GetSystemMetrics(78) - 610, 17, self.w, self.h)
+                self.label4.show()
+                return True
+            elif (user32.GetSystemMetrics(78) - 245 <= right and right <= user32.GetSystemMetrics(78) - 150 and Config.flowerFive == True):
+                Config.flowerFive = False
+                self.pix1 = QPixmap('pictures/frog1Down.png')
+                self.label5.setPixmap(self.pix1)
+                self.label5.setGeometry(user32.GetSystemMetrics(78) - 230, 17, self.w, self.h)
+                self.label5.show()
+                return True
+
+            return False
+        else:
+            return True
+
+    def refresh(self):
+        print(self.id)
+        self.label1.setGeometry(user32.GetSystemMetrics(78) - 8000, 8000, self.w, self.h)
+        self.label1.show()
+        self.label2.setGeometry(user32.GetSystemMetrics(78) - 8000, 8000, self.w, self.h)
+        self.label2.show()
+        self.label3.setGeometry(user32.GetSystemMetrics(78) - 8000, 8000, self.w, self.h)
+        self.label3.show()
+        self.label4.setGeometry(user32.GetSystemMetrics(78) - 8000, 8000, self.w, self.h)
+        self.label4.show()
+        self.label5.setGeometry(user32.GetSystemMetrics(78) - 8000, 8000, self.w, self.h)
+        self.label5.show()
+
 

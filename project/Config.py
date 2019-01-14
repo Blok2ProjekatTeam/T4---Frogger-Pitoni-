@@ -6,6 +6,9 @@ class Config:
     woodId = -1
     turtleId = -1
 
+    lives1 = 3
+    lives2 = 3
+
     speedFrog = 50
 
     speedcar = 8

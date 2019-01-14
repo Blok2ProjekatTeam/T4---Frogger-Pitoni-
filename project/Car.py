@@ -5,6 +5,7 @@ from Rectangle import *
 from Config import *
 import time
 import random
+from PyQt5 import QtGui
 
 class Car(QWidget):
     def __init__(self,parent):
@@ -37,6 +38,9 @@ class Car(QWidget):
 
         self.vreme = random.choice(self.config.mode)
 
+        self.font = QtGui.QFont()
+        self.font.setFamily("Forte")
+        self.font.setPointSize(30)
 
     def initPosition(self):
 
@@ -62,8 +66,6 @@ class Car(QWidget):
         self.cargreen1.labelSet('pictures/greenCarLeft.png')
         self.cargreen2.labelSet('pictures/greenCarLeft.png')
         self.cargreen3.labelSet('pictures/greenCarLeft.png')
-
-        self.change_weather()
 
         self.show()
 

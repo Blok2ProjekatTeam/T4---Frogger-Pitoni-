@@ -1,0 +1,1 @@
+KAD DODJE GORE NA LOKVANJ ISCRTATI ZABU SA KOORDINATAMA: Y = 17, X = user32.GetSystemMetrics(78) - 1760, X = user32.GetSystemMetrics(78) - 1380, X = user32.GetSystemMetrics(78) - 1000, X = user32.GetSystemMetrics(78) - 610, X = user32.GetSystemMetrics(78) -230 

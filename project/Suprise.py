@@ -13,14 +13,16 @@ class Suprise(QWidget):
         self.suprise = Rectangle(user32.GetSystemMetrics(78) - random.randint(0,1920), user32.GetSystemMetrics(79) - 83*random.randint(0,6), 50, 83, "suprise")
 
     def initPosition(self):
+        self.suprise.x = user32.GetSystemMetrics(78) - random.randint(0, 1920)
+        self.suprise.y = user32.GetSystemMetrics(79) - 83 * random.randint(0, 6)
         self.suprise.labelSet('pictures/fly.png')
-
         self.show()
 
     def hideFly(self):
-        self.suprise.x = 0
+        self.suprise.x = -250
         self.suprise.y = 0
-
+        self.suprise.labelSet('pictures/fly.png')
+        return random.randint(0, 1)
 
 
 class SupriseSignal(QObject):

@@ -8,6 +8,8 @@ from Config import *
 from Score import *
 from PyQt5 import QtGui
 from Suprise import *
+from multiprocessing import Queue, Process
+from Lives import funkcija
 
 user32 = ctypes.windll.user32
 
@@ -73,6 +75,12 @@ class SimMoveDemo(QWidget):
         self.suprise.supriseSign = SupriseSignal()
         self.suprise.supriseSign.supriseSig.connect(self.suprise.initPosition)
         self.suprise.supriseSign.start()
+
+        self.queue = Queue()
+        self.queue1 = Queue()
+        self.queue2 = Queue()
+        self.process = Process(target=funkcija, args=[self.queue, self.queue1, self.queue2])
+        self.process.start()
 
       #  self.car_move = CarMove(self)
 
@@ -172,21 +180,22 @@ class SimMoveDemo(QWidget):
             Config.attachSpeedWood += self.score1.level
             Config.speedturtle += self.score1.level
         ############################################################################################################
-        if(self.score1.lives == 0 and self.score2.lives == 0):
-            self.font.setPointSize(80)
-            self.gameOverLabel.setFont(self.font)
-            if(self.score1.score > self.score2.score):
-                self.gameOverLabel.setText('GAME OVER! \nPlayer 1 wins! \nPress ESC to exit. ')
-                self.gameOverLabel.setGeometry(500, 280, 1000, 500)
-            elif(self.score1.score < self.score2.score):
-                self.gameOverLabel.setText('GAME OVER! \nPlayer 2 wins! \nPress ESC to exit. ')
-                self.gameOverLabel.setGeometry(500, 280, 1000, 500)
-            else:
-                self.gameOverLabel.setText('GAME OVER! \nDraw! \nPress ESC to exit. ')
-                self.gameOverLabel.setGeometry(500, 280, 1000, 500)
-        self.font.setPointSize(30)
+        if (not self.queue.empty()):
+            x = self.queue.get()
+            if (x == 1):
+                self.font.setPointSize(80)
+                self.gameOverLabel.setFont(self.font)
+                if(self.score1.score > self.score2.score):
+                    self.gameOverLabel.setText('GAME OVER! \nPlayer 1 wins! \nPress ESC to exit. ')
+                    self.gameOverLabel.setGeometry(500, 280, 1000, 500)
+                elif(self.score1.score < self.score2.score):
+                    self.gameOverLabel.setText('GAME OVER! \nPlayer 2 wins! \nPress ESC to exit. ')
+                    self.gameOverLabel.setGeometry(500, 280, 1000, 500)
+                else:
+                    self.gameOverLabel.setText('GAME OVER! \nDraw! \nPress ESC to exit. ')
+                    self.gameOverLabel.setGeometry(500, 280, 1000, 500)
         ############################################################################################################
-
+        self.font.setPointSize(30)
         if(Config.vreme == "snow"):
             self.modeLabel.setFont(self.font)
             self.modeLabel.setText('Mode: Snow')
@@ -220,6 +229,7 @@ class SimMoveDemo(QWidget):
                 if (self.score1.lives == 1):
                     self.frog1.labelSet('pictures/skull.png')
                     self.score1.lives -= 1
+                    self.queue1.put(0)
                     self.liveLabel1.setFont(self.font)
                     self.liveLabel1.setText('Lives: ' + str(self.score1.lives))
                     self.liveLabel1.setGeometry(1770, -10, 500, 100)
@@ -249,6 +259,7 @@ class SimMoveDemo(QWidget):
                 if (self.score1.lives == 1):
                     self.frog1.labelSet('pictures/skull.png')
                     self.score1.lives -= 1
+                    self.queue1.put(0)
                     self.liveLabel1.setFont(self.font)
                     self.liveLabel1.setText('Lives: ' + str(self.score1.lives))
                     self.liveLabel1.setGeometry(1770, -10, 500, 100)
@@ -271,6 +282,7 @@ class SimMoveDemo(QWidget):
                 if (self.score2.lives == 1):
                     self.frog2.labelSet('pictures/skull.png')
                     self.score2.lives -= 1
+                    self.queue2.put(0)
                     self.liveLabel2.setFont(self.font)
                     self.liveLabel2.setText('Lives: ' + str(self.score2.lives))
                     self.liveLabel2.setGeometry(10, -10, 500, 100)
@@ -300,6 +312,7 @@ class SimMoveDemo(QWidget):
                 if (self.score2.lives == 1):
                     self.frog2.labelSet('pictures/skull.png')
                     self.score2.lives -= 1
+                    self.queue2.put(0)
                     self.liveLabel2.setFont(self.font)
                     self.liveLabel2.setText('Lives: ' + str(self.score2.lives))
                     self.liveLabel2.setGeometry(10, -10, 500, 100)
@@ -372,6 +385,7 @@ class SimMoveDemo(QWidget):
             #self.car_move.vremeSignal.die()
             self.objectMovement.vremeSignal.die()
             self.suprise.supriseSign.die()
+            self.process.terminate()
             sys.exit()
 
     def closeEvent(self, event):
